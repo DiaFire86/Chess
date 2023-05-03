@@ -10,13 +10,13 @@
 #include "display.h"
 
 namespace Chess {
-    ChessBoard::ChessBoard(QGraphicsView* view = nullptr, int width = 0, int height = 0) : QGraphicsScene(0, 0, width + 10, height + 10), boardWidth(width), boardHeight(height), m_view(view), selectedPiece(nullptr), isStarted(true)
+    ChessBoard::ChessBoard(QGraphicsView* view = nullptr, int width = 0, int height = 0) : QGraphicsScene(0, 0, width + 10, height + 10), boardWidth(width), boardHeight(height), m_view(view), selectedPiece(nullptr), isStarted(true), isPaused(false)
     {
         initBoard();
         initPieces();
     }
 
-    ChessBoard::ChessBoard(QGraphicsView* view, int width, int height, bool init) : QGraphicsScene(0, 0, width + 10, height + 10), boardWidth(width), boardHeight(height), m_view(view), selectedPiece(nullptr), isStarted(init)
+    ChessBoard::ChessBoard(QGraphicsView* view, int width, int height, bool init) : QGraphicsScene(0, 0, width + 10, height + 10), boardWidth(width), boardHeight(height), m_view(view), selectedPiece(nullptr), isStarted(init), isPaused(false)
     {
         initBoard();
         dispPieces();
@@ -118,6 +118,7 @@ namespace Chess {
     {
         QWidget* choice = qobject_cast<QWidget*>(sender()->parent());
         choice->close();
+        isPaused = false;
     }
 
     void ChessBoard::rookPromotion()
@@ -130,6 +131,7 @@ namespace Chess {
         //delete selectedPiece;
         QWidget* choice = qobject_cast<QWidget*>(sender()->parent());
         choice->close();
+        isPaused = false;
     }
 
     void ChessBoard::bishopPromotion()
@@ -142,6 +144,7 @@ namespace Chess {
     //    delete selectedPiece;
         QWidget* choice = qobject_cast<QWidget*>(sender()->parent());
         choice->close();
+        isPaused = false;
     }
 
     void ChessBoard::knightPromotion()
@@ -154,6 +157,7 @@ namespace Chess {
         //delete selectedPiece;
         QWidget* choice = qobject_cast<QWidget*>(sender()->parent());
         choice->close();
+        isPaused = false;
     }
 
     void ChessBoard::queenPromotion()
@@ -166,11 +170,90 @@ namespace Chess {
         //delete selectedPiece;
         QWidget* choice = qobject_cast<QWidget*>(sender()->parent());
         choice->close();
+        isPaused = false;
     }
 
+    bool ChessBoard::isWhiteKingInCheckMate(QGraphicsPixmapItem* (&board)[8][8])
+    {
+        for (int column = 0; column < 8; column++)
+        {
+            for (int row = 0; row < 8; row++)
+            {
+                Piece::ChessPiece* piece = dynamic_cast<Piece::ChessPiece*>(board[column][row]);
+                if (piece != nullptr && piece->getColor() == WHITE)
+                {
+                    QList<QPointF> pieceMoves = piece->possibleMoves(board, piece, QPointF(row, column));
+                    for (int moves = 0; moves < pieceMoves.size(); moves++)
+                    {
+                        QPointF move = pieceMoves.at(moves);
+                        int newXCoord = move.x();
+                        int newYCoord = move.y();
+                        Piece::ChessPiece* pieceTemp = dynamic_cast<Piece::ChessPiece*>(board[newXCoord][newYCoord]);
+                        board[newXCoord][newYCoord] = piece;
+                        board[column][row] = nullptr;
+                        if (!piece->isKingInCheck(board))
+                        {
+                            board[newXCoord][newYCoord] = pieceTemp;
+                            board[column][row] = piece;
+                            return false;
+                            break;
+                        }
+                        else
+                        {
+                            board[newXCoord][newYCoord] = pieceTemp;
+                            board[column][row] = piece;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    bool ChessBoard::isBlackKingInCheckMate(QGraphicsPixmapItem* (&board)[8][8])
+    {
+        for (int column = 0; column < 8; column++)
+        {
+            for (int row = 0; row < 8; row++)
+            {
+                Piece::ChessPiece* piece = dynamic_cast<Piece::ChessPiece*>(board[column][row]);
+                if (piece != nullptr && piece->getColor() == BLACK)
+                {
+                    QList<QPointF> pieceMoves = piece->possibleMoves(board, piece, QPointF(row, column));
+                    for (int moves = 0; moves < pieceMoves.size(); moves++)
+                    {
+                        QPointF move = pieceMoves.at(moves);
+                        int newXCoord = move.x();
+                        int newYCoord = move.y();
+                        Piece::ChessPiece* pieceTemp = dynamic_cast<Piece::ChessPiece*>(board[newXCoord][newYCoord]);
+                        board[newXCoord][newYCoord] = piece;
+                        board[column][row] = nullptr;
+                        if (!piece->isKingInCheck(board))
+                        {
+                            board[newXCoord][newYCoord] = pieceTemp;
+                            board[column][row] = piece;
+                            return false;
+                            break;
+                        }
+                        else
+                        {
+                            board[newXCoord][newYCoord] = pieceTemp;
+                            board[column][row] = piece;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+
+
+
+    // Déplacement des pièces et calcul du jeu
     void ChessBoard::mousePressEvent(QGraphicsSceneMouseEvent* event)
     {
-        if (event->button() == Qt::LeftButton)
+        if (event->button() == Qt::LeftButton && !isPaused)
         {
             Display* display = new Display();
 
@@ -201,7 +284,7 @@ namespace Chess {
 
     void ChessBoard::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
     {
-        if (selectedPiece)
+        if (selectedPiece && !isPaused)
         {
             QPointF newPos = event->scenePos() - QPointF(cellSize / 2, cellSize / 2);
             selectedPiece->setPos(newPos);
@@ -211,7 +294,7 @@ namespace Chess {
 
     void ChessBoard::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
     {
-        if (selectedPiece)
+        if (selectedPiece && !isPaused)
         {
             Display* display = new Display();
             // Si la partie à commencée
@@ -267,6 +350,7 @@ namespace Chess {
                             // Si la pièce est un pion, de l'autre coté du board, on laisse le joueur choisir une nouvelle pièce à échanger
                             if (chessPiece->getType() == PAWN && ((chessPiece->getColor() == WHITE && yCoord == 7) || (chessPiece->getColor() == BLACK && yCoord == 0)))
                             {
+                                isPaused = true;
                                 QWidget* choice = new QWidget();
                                 QVBoxLayout* layout = new QVBoxLayout();
                                 QPushButton* pawnButton = new QPushButton("Pion");
@@ -290,7 +374,6 @@ namespace Chess {
                                 QObject::connect(bishopButton, &QPushButton::clicked, this, &ChessBoard::bishopPromotion);
                                 QObject::connect(knightButton, &QPushButton::clicked, this, &ChessBoard::knightPromotion);
                                 QObject::connect(queenButton, &QPushButton::clicked, this, &ChessBoard::queenPromotion);
-
                             }
 
                             // Changement de la position de la pièce pour l'affichage
@@ -300,10 +383,20 @@ namespace Chess {
                             if (isWhiteTurn && initialPosCorner != newPosCorner)
                             {
                                 isWhiteTurn = false;
+                                if (this->isBlackKingInCheckMate(board))
+                                {
+                                    display->BlackKingInCheckMate();
+                                    isPaused = true;
+                                }
                             }
                             else if (!isWhiteTurn && initialPosCorner != newPosCorner)
                             {
                                 isWhiteTurn = true;
+                                if (this->isWhiteKingInCheckMate(board))
+                                {
+                                    display->WhiteKingInCheckMate();
+                                    isPaused = true;
+                                }
                             }
                         }
                     }

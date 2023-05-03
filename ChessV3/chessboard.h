@@ -23,6 +23,9 @@ namespace Chess {
         void knightPromotion();
         void queenPromotion();
 
+        bool isWhiteKingInCheckMate(QGraphicsPixmapItem* (&board)[8][8]);
+        bool isBlackKingInCheckMate(QGraphicsPixmapItem* (&board)[8][8]);
+
         ~ChessBoard();
 
         int getCellSize() { return cellSize; }
@@ -36,6 +39,7 @@ namespace Chess {
         int cellSize = 0;
         bool isWhiteTurn = true;
         bool isStarted = false;
+        bool isPaused = false;
 
         QGraphicsPixmapItem* board[8][8];
         QGraphicsPixmapItem* selectedPiece;

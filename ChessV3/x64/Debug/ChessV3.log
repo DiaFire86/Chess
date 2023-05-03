@@ -1,5 +1,11 @@
 ﻿  bishop.cpp
+  chessboard.cpp
+  chesspiece.cpp
+  display.cpp
   king.cpp
+  knight.cpp
+  main.cpp
+  mainwindow.cpp
   pawn.cpp
   queen.cpp
   rook.cpp

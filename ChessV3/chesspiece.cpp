@@ -38,9 +38,9 @@ namespace Piece {
         }
 
         // Verifie si un de ces mouvements mettrait le roi en echec
-        for (int column = 0; column < opponentMoves.size(); column++)
+        for (int moves = 0; moves < opponentMoves.size(); moves++)
         {
-            QPointF move = opponentMoves.at(column);
+            QPointF move = opponentMoves.at(moves);
             if (move.x() == xKing && move.y() == yKing)
             {
                 return true; // Le roi est en echec

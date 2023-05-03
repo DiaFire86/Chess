@@ -34,3 +34,23 @@ void Display::kingInCheck()
     messageLabel->setAlignment(Qt::AlignCenter);
     messageLabel->show();
 }
+
+void Display::WhiteKingInCheckMate()
+{
+    QLabel* messageLabel = new QLabel();
+    messageLabel->setFixedSize(400, 50);
+    messageLabel->setText("Le roi blanc est en echec et mat !\nVictoire des noirs !");
+    messageLabel->setStyleSheet("color: red; font-weight: bold;");
+    messageLabel->setAlignment(Qt::AlignCenter);
+    messageLabel->show();
+}
+
+void Display::BlackKingInCheckMate()
+{
+    QLabel* messageLabel = new QLabel();
+    messageLabel->setFixedSize(400, 50);
+    messageLabel->setText("Le roi noir est en echec et mat !\nVictoire des blancs !");
+    messageLabel->setStyleSheet("color: red; font-weight: bold;");
+    messageLabel->setAlignment(Qt::AlignCenter);
+    messageLabel->show();
+}
