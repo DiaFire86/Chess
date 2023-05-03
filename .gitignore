@@ -32,3 +32,4 @@
 *.app
 
 *.ipch
+.vs/ChessV3/v17/ipch/
