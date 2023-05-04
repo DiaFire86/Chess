@@ -17,11 +17,11 @@ namespace Chess {
 
         void removeDispPieces();
 
-        void pawnPromotion();
-        void rookPromotion();
-        void bishopPromotion();
-        void knightPromotion();
-        void queenPromotion();
+        void pawnPromotion(int xCoord, int yCoord);
+        void rookPromotion(int xCoord, int yCoord);
+        void bishopPromotion(int xCoord, int yCoord);
+        void knightPromotion(int xCoord, int yCoord);
+        void queenPromotion(int xCoord, int yCoord);
 
         bool isWhiteKingInCheckMate(QGraphicsPixmapItem* (&board)[8][8]);
         bool isBlackKingInCheckMate(QGraphicsPixmapItem* (&board)[8][8]);

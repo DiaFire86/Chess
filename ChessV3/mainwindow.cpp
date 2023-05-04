@@ -8,7 +8,7 @@ MainWindow::MainWindow(int width = 0, int height = 0) : boardWidth(width), board
 	setFixedSize(boardWidth + 10, boardHeight + 10);
 
 	QPushButton* playButton = new QPushButton("Demarrer une partie classique\n", this);
-	QPushButton* customButton = new QPushButton("Demarrer une partie personnalisee (WIP mais permet de tester les rois)" "\n", this);
+	QPushButton* customButton = new QPushButton("Demarrer une partie personnalisee\n", this);
 	playButton->setGeometry(boardWidth/2 - 100, boardHeight/2 - 90, 200, 50);
 	customButton->setGeometry(boardWidth / 2 - 200, boardHeight / 2 - 25, 400, 50);
 

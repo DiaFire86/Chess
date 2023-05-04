@@ -114,60 +114,71 @@ namespace Chess {
         isWhiteTurn = false;
     }
 
-    void ChessBoard::pawnPromotion()
+    void ChessBoard::pawnPromotion(int xCoord, int yCoord)
     {
+        Piece::ChessPiece* chessPiece = dynamic_cast<Piece::ChessPiece*>(board[xCoord][yCoord]);
+        removeItem(chessPiece);
+        delete(chessPiece);
+        Color color((yCoord == 0) ? BLACK : WHITE);
+        Piece::ChessPiece* newPiece = new Pawn(yCoord, xCoord, color);
+        addItem(newPiece);
+        board[xCoord][yCoord] = newPiece;
         QWidget* choice = qobject_cast<QWidget*>(sender()->parent());
         choice->close();
         isPaused = false;
     }
 
-    void ChessBoard::rookPromotion()
+    void ChessBoard::rookPromotion(int xCoord, int yCoord)
     {
-        //Piece::ChessPiece* chessPiece = dynamic_cast<Piece::ChessPiece*>(selectedPiece);
-        //Piece::ChessPiece* newPiece = new Rook(chessPiece->getYCoord(), chessPiece->getXCoord(), chessPiece->getColor());
-        //board[chessPiece->getXCoord()][chessPiece->getYCoord()] = newPiece;
-        //addItem(newPiece);
-        //removeItem(selectedPiece);
-        //delete selectedPiece;
+        Piece::ChessPiece* chessPiece = dynamic_cast<Piece::ChessPiece*>(board[xCoord][yCoord]);
+        removeItem(chessPiece);
+        delete(chessPiece);
+        Color color((yCoord == 0) ? BLACK : WHITE);
+        Piece::ChessPiece* newPiece = new Rook(yCoord, xCoord, color);
+        addItem(newPiece);
+        board[xCoord][yCoord] = newPiece;
         QWidget* choice = qobject_cast<QWidget*>(sender()->parent());
         choice->close();
         isPaused = false;
     }
 
-    void ChessBoard::bishopPromotion()
+    void ChessBoard::bishopPromotion(int xCoord, int yCoord)
     {
-    //    Piece::ChessPiece* chessPiece = dynamic_cast<Piece::ChessPiece*>(selectedPiece);
-    //    Piece::ChessPiece* newPiece = new Bishop(chessPiece->getYCoord(), chessPiece->getXCoord(), chessPiece->getColor());
-    //    board[chessPiece->getXCoord()][chessPiece->getYCoord()] = newPiece;
-    //    addItem(newPiece);
-    //    removeItem(selectedPiece);
-    //    delete selectedPiece;
+        Piece::ChessPiece* chessPiece = dynamic_cast<Piece::ChessPiece*>(board[xCoord][yCoord]);
+        removeItem(chessPiece);
+        delete(chessPiece);
+        Color color((yCoord == 0) ? BLACK : WHITE);
+        Piece::ChessPiece* newPiece = new Bishop(yCoord, xCoord, color);
+        addItem(newPiece);
+        board[xCoord][yCoord] = newPiece;
         QWidget* choice = qobject_cast<QWidget*>(sender()->parent());
         choice->close();
         isPaused = false;
     }
 
-    void ChessBoard::knightPromotion()
+    void ChessBoard::knightPromotion(int xCoord, int yCoord)
     {
-        //Piece::ChessPiece* chessPiece = dynamic_cast<Piece::ChessPiece*>(selectedPiece);
-        //Piece::ChessPiece* newPiece = new Knight(chessPiece->getYCoord(), chessPiece->getXCoord(), chessPiece->getColor());
-        //board[chessPiece->getXCoord()][chessPiece->getYCoord()] = newPiece;
-        //addItem(newPiece);
-        //removeItem(selectedPiece);
-        //delete selectedPiece;
+        Piece::ChessPiece* chessPiece = dynamic_cast<Piece::ChessPiece*>(board[xCoord][yCoord]);
+        removeItem(chessPiece);
+        delete(chessPiece);
+        Color color((yCoord == 0) ? BLACK : WHITE);
+        Piece::ChessPiece* newPiece = new Knight(yCoord, xCoord, color);
+        addItem(newPiece);
+        board[xCoord][yCoord] = newPiece;
         QWidget* choice = qobject_cast<QWidget*>(sender()->parent());
         choice->close();
         isPaused = false;
     }
 
-    void ChessBoard::queenPromotion()
+    void ChessBoard::queenPromotion(int xCoord, int yCoord)
     {
-        //Piece::ChessPiece* chessPiece = dynamic_cast<Piece::ChessPiece*>(selectedPiece);
-        //Piece::ChessPiece* newPiece = new Queen(chessPiece->getYCoord(), chessPiece->getXCoord(), chessPiece->getColor());
-        //board[chessPiece->getXCoord()][chessPiece->getYCoord()] = newPiece;
-        //addItem(newPiece);
-        //removeItem(selectedPiece);
-        //delete selectedPiece;
+        Piece::ChessPiece* chessPiece = dynamic_cast<Piece::ChessPiece*>(board[xCoord][yCoord]);
+        removeItem(chessPiece);
+        delete(chessPiece);
+        Color color((yCoord == 0) ? BLACK : WHITE);
+        Piece::ChessPiece* newPiece = new Queen(yCoord, xCoord, color);
+        addItem(newPiece);
+        board[xCoord][yCoord] = newPiece;
         QWidget* choice = qobject_cast<QWidget*>(sender()->parent());
         choice->close();
         isPaused = false;
@@ -369,11 +380,11 @@ namespace Chess {
                                 choice->setLayout(layout);
                                 choice->show();
 
-                                QObject::connect(pawnButton, &QPushButton::clicked, this, &ChessBoard::pawnPromotion);
-                                QObject::connect(rookButton, &QPushButton::clicked, this, &ChessBoard::rookPromotion);
-                                QObject::connect(bishopButton, &QPushButton::clicked, this, &ChessBoard::bishopPromotion);
-                                QObject::connect(knightButton, &QPushButton::clicked, this, &ChessBoard::knightPromotion);
-                                QObject::connect(queenButton, &QPushButton::clicked, this, &ChessBoard::queenPromotion);
+                                QObject::connect(pawnButton, &QPushButton::clicked, this, [this, xCoord, yCoord]() {pawnPromotion(xCoord, yCoord); });
+                                QObject::connect(rookButton, &QPushButton::clicked, this, [this, xCoord, yCoord]() {rookPromotion(xCoord, yCoord); });
+                                QObject::connect(bishopButton, &QPushButton::clicked, this, [this, xCoord, yCoord]() {bishopPromotion(xCoord, yCoord); });
+                                QObject::connect(knightButton, &QPushButton::clicked, this, [this, xCoord, yCoord]() {knightPromotion(xCoord, yCoord); });
+                                QObject::connect(queenButton, &QPushButton::clicked, this, [this, xCoord, yCoord]() {queenPromotion(xCoord, yCoord); });
                             }
 
                             // Changement de la position de la pièce pour l'affichage
