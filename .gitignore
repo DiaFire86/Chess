@@ -31,5 +31,7 @@
 *.out
 *.app
 
+# Fichier trop volumineux
 *.ipch
 .vs/ChessV3/v17/ipch/
+.vs/ChessV3/v17/Browse.VC.db
