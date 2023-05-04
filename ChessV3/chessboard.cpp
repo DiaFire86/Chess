@@ -117,8 +117,11 @@ namespace Chess {
     void ChessBoard::pawnPromotion(int xCoord, int yCoord)
     {
         Piece::ChessPiece* chessPiece = dynamic_cast<Piece::ChessPiece*>(board[xCoord][yCoord]);
-        removeItem(chessPiece);
-        delete(chessPiece);
+        if (chessPiece != nullptr)
+        {
+            removeItem(chessPiece);
+            delete(chessPiece);
+        }
         Color color((yCoord == 0) ? BLACK : WHITE);
         Piece::ChessPiece* newPiece = new Pawn(yCoord, xCoord, color);
         addItem(newPiece);
@@ -131,8 +134,11 @@ namespace Chess {
     void ChessBoard::rookPromotion(int xCoord, int yCoord)
     {
         Piece::ChessPiece* chessPiece = dynamic_cast<Piece::ChessPiece*>(board[xCoord][yCoord]);
-        removeItem(chessPiece);
-        delete(chessPiece);
+        if (chessPiece != nullptr)
+        {
+            removeItem(chessPiece);
+            delete(chessPiece);
+        }
         Color color((yCoord == 0) ? BLACK : WHITE);
         Piece::ChessPiece* newPiece = new Rook(yCoord, xCoord, color);
         addItem(newPiece);
@@ -145,8 +151,11 @@ namespace Chess {
     void ChessBoard::bishopPromotion(int xCoord, int yCoord)
     {
         Piece::ChessPiece* chessPiece = dynamic_cast<Piece::ChessPiece*>(board[xCoord][yCoord]);
-        removeItem(chessPiece);
-        delete(chessPiece);
+        if (chessPiece != nullptr)
+        {
+            removeItem(chessPiece);
+            delete(chessPiece);
+        }
         Color color((yCoord == 0) ? BLACK : WHITE);
         Piece::ChessPiece* newPiece = new Bishop(yCoord, xCoord, color);
         addItem(newPiece);
@@ -159,8 +168,11 @@ namespace Chess {
     void ChessBoard::knightPromotion(int xCoord, int yCoord)
     {
         Piece::ChessPiece* chessPiece = dynamic_cast<Piece::ChessPiece*>(board[xCoord][yCoord]);
-        removeItem(chessPiece);
-        delete(chessPiece);
+        if (chessPiece != nullptr)
+        {
+            removeItem(chessPiece);
+            delete(chessPiece);
+        }
         Color color((yCoord == 0) ? BLACK : WHITE);
         Piece::ChessPiece* newPiece = new Knight(yCoord, xCoord, color);
         addItem(newPiece);
@@ -173,8 +185,11 @@ namespace Chess {
     void ChessBoard::queenPromotion(int xCoord, int yCoord)
     {
         Piece::ChessPiece* chessPiece = dynamic_cast<Piece::ChessPiece*>(board[xCoord][yCoord]);
-        removeItem(chessPiece);
-        delete(chessPiece);
+        if (chessPiece != nullptr)
+        {
+            removeItem(chessPiece);
+            delete(chessPiece);
+        }
         Color color((yCoord == 0) ? BLACK : WHITE);
         Piece::ChessPiece* newPiece = new Queen(yCoord, xCoord, color);
         addItem(newPiece);
