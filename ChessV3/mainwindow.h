@@ -8,6 +8,7 @@ class MainWindow : public QWidget
 {
 public:
 	MainWindow(int width, int height);
+	~MainWindow() { if (chessWidget != nullptr) { delete chessWidget; } }
 
 private:
 	QWidget* chessWidget = nullptr;

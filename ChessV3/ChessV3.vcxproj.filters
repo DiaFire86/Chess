@@ -84,9 +84,6 @@
     <ClInclude Include="chessboard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mainwindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="chesspiece.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -112,6 +109,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="verification_allocation.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mainwindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

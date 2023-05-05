@@ -32,6 +32,7 @@ void Display::kingInCheck()
     messageLabel->setText("Coup invalide, votre roi est en echec !");
     messageLabel->setStyleSheet("color: red; font-weight: bold;");
     messageLabel->setAlignment(Qt::AlignCenter);
+    messageLabel->setAttribute(Qt::WA_DeleteOnClose);
     messageLabel->show();
 }
 
@@ -42,6 +43,7 @@ void Display::WhiteKingInCheckMate()
     messageLabel->setText("Le roi blanc est en echec et mat !\nVictoire des noirs !");
     messageLabel->setStyleSheet("color: red; font-weight: bold;");
     messageLabel->setAlignment(Qt::AlignCenter);
+    messageLabel->setAttribute(Qt::WA_DeleteOnClose);
     messageLabel->show();
 }
 
@@ -52,5 +54,6 @@ void Display::BlackKingInCheckMate()
     messageLabel->setText("Le roi noir est en echec et mat !\nVictoire des blancs !");
     messageLabel->setStyleSheet("color: red; font-weight: bold;");
     messageLabel->setAlignment(Qt::AlignCenter);
+    messageLabel->setAttribute(Qt::WA_DeleteOnClose);
     messageLabel->show();
 }
