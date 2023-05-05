@@ -16,4 +16,7 @@ private:
 
 	void openRegularChessWidget();
 	void openCustomChessWidget();
+	void openPredefined1ChessWidget();
+	void openPredefined2ChessWidget();
+	void openPredefined3ChessWidget();
 };

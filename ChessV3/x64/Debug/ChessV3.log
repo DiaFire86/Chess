@@ -1,4 +1,3 @@
 ﻿  chessboard.cpp
-  main.cpp
-  mainwindow.cpp
+  qrc_chessv3.cpp
   ChessV3.vcxproj -> D:\Travail\Logiciel\INF1015\Projet\ChessV3\x64\Debug\ChessV3.exe

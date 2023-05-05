@@ -10,10 +10,10 @@
 #include "display.h"
 
 namespace Chess {
-    ChessBoard::ChessBoard(QGraphicsView* view = nullptr, int width = 0, int height = 0) : QGraphicsScene(0, 0, width + 10, height + 10), boardWidth(width), boardHeight(height), m_view(view), selectedPiece(nullptr), isStarted(true), isPaused(false)
+    ChessBoard::ChessBoard(QGraphicsView* view = nullptr, int width = 0, int height = 0, int predefined = 0) : QGraphicsScene(0, 0, width + 10, height + 10), boardWidth(width), boardHeight(height), m_view(view), selectedPiece(nullptr), isStarted(true), isPaused(false)
     {
         initBoard();
-        initPieces();
+        initPieces(predefined);
     }
 
     ChessBoard::ChessBoard(QGraphicsView* view, int width, int height, bool init) : QGraphicsScene(0, 0, width + 10, height + 10), boardWidth(width), boardHeight(height), m_view(view), selectedPiece(nullptr), isStarted(init), isPaused(false)
@@ -37,27 +37,95 @@ namespace Chess {
         cellSize = boardWidth / 8;
     }
 
-    void ChessBoard::initPieces()
+    void ChessBoard::initPieces(int predefined)
     {
         // Initialisation des pièces
-        Piece::ChessPiece* pieces[8][8] =
+        if (predefined == 0)
         {
-            {new Rook(0,0, WHITE),new Pawn(1,0, WHITE),nullptr,nullptr,nullptr,nullptr,new Pawn(6,0, BLACK),new Rook(7,0, BLACK)},
-            {new Knight(0, 1, WHITE),new Pawn(1,1, WHITE),nullptr,nullptr,nullptr,nullptr,new Pawn(6,1, BLACK),new Knight(7,1, BLACK)},
-            {new Bishop(0, 2, WHITE),new Pawn(1,2, WHITE),nullptr,nullptr,nullptr,nullptr,new Pawn(6,2, BLACK),new Bishop(7,2, BLACK)},
-            {new Queen(0, 3, WHITE),new Pawn(1,3, WHITE),nullptr,nullptr,nullptr,nullptr,new Pawn(6,3, BLACK),new Queen(7,3, BLACK)},
-            {new King(0, 4, WHITE),new Pawn(1,4, WHITE),nullptr,nullptr,nullptr,nullptr,new Pawn(6,4, BLACK),new King(7,4, BLACK)},
-            {new Bishop(0, 5, WHITE),new Pawn(1,5, WHITE),nullptr,nullptr,nullptr,nullptr,new Pawn(6,5, BLACK),new Bishop(7,5, BLACK)},
-            {new Knight(0, 6, WHITE),new Pawn(1,6, WHITE),nullptr,nullptr,nullptr,nullptr,new Pawn(6,6, BLACK),new Knight(7,6, BLACK)},
-            {new Rook(0, 7, WHITE),new Pawn(1,7, WHITE),nullptr,nullptr,nullptr,nullptr,new Pawn(6,7, BLACK),new Rook(7,7, BLACK)},
-        };
-
-        for (int column = 0; column < 8; column++)
-        {
-            for (int row = 0; row < 8; row++)
+            Piece::ChessPiece* pieces0[8][8] =
             {
-                board[column][row] = pieces[column][row];
-                addItem(pieces[column][row]);
+                {new Rook(0,0, WHITE),new Pawn(1,0, WHITE),nullptr,nullptr,nullptr,nullptr,new Pawn(6,0, BLACK),new Rook(7,0, BLACK)},
+                {new Knight(0, 1, WHITE),new Pawn(1,1, WHITE),nullptr,nullptr,nullptr,nullptr,new Pawn(6,1, BLACK),new Knight(7,1, BLACK)},
+                {new Bishop(0, 2, WHITE),new Pawn(1,2, WHITE),nullptr,nullptr,nullptr,nullptr,new Pawn(6,2, BLACK),new Bishop(7,2, BLACK)},
+                {new Queen(0, 3, WHITE),new Pawn(1,3, WHITE),nullptr,nullptr,nullptr,nullptr,new Pawn(6,3, BLACK),new Queen(7,3, BLACK)},
+                {new King(0, 4, WHITE),new Pawn(1,4, WHITE),nullptr,nullptr,nullptr,nullptr,new Pawn(6,4, BLACK),new King(7,4, BLACK)},
+                {new Bishop(0, 5, WHITE),new Pawn(1,5, WHITE),nullptr,nullptr,nullptr,nullptr,new Pawn(6,5, BLACK),new Bishop(7,5, BLACK)},
+                {new Knight(0, 6, WHITE),new Pawn(1,6, WHITE),nullptr,nullptr,nullptr,nullptr,new Pawn(6,6, BLACK),new Knight(7,6, BLACK)},
+                {new Rook(0, 7, WHITE),new Pawn(1,7, WHITE),nullptr,nullptr,nullptr,nullptr,new Pawn(6,7, BLACK),new Rook(7,7, BLACK)},
+            };
+            for (int column = 0; column < 8; column++)
+            {
+                for (int row = 0; row < 8; row++)
+                {
+                    board[column][row] = pieces0[column][row];
+                    addItem(pieces0[column][row]);
+                }
+            }
+        }
+        else if (predefined == 1)
+        {
+            Piece::ChessPiece* pieces1[8][8] =
+            {
+                {nullptr, nullptr, new Rook(2,0, BLACK), nullptr, nullptr, nullptr, nullptr, nullptr},
+                {nullptr, nullptr, nullptr, nullptr, new Rook(4,1, WHITE), nullptr, nullptr, nullptr},
+                {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr},
+                {nullptr, nullptr, nullptr, nullptr, new Bishop(4,3, WHITE), new King(5,3, BLACK), nullptr, nullptr},
+                {nullptr, nullptr, nullptr, nullptr, new Knight(4,4, BLACK), nullptr, nullptr, nullptr},
+                {nullptr, nullptr, nullptr, new Bishop(3,5, BLACK), nullptr, nullptr, nullptr, nullptr},
+                {nullptr, new King(1,6, WHITE), nullptr, nullptr, nullptr, nullptr, nullptr, nullptr},
+                {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr},
+            };
+            for (int column = 0; column < 8; column++)
+            {
+                for (int row = 0; row < 8; row++)
+                {
+                    board[column][row] = pieces1[column][row];
+                    addItem(pieces1[column][row]);
+                }
+            }
+        }
+        else if (predefined == 2)
+        {
+            Piece::ChessPiece* pieces2[8][8] =
+            {
+                {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr},
+                {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr},
+                {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, new Queen(6,2, WHITE), nullptr},
+                {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr},
+                {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr},
+                {nullptr, nullptr, new Knight(2,5, BLACK), nullptr, nullptr, nullptr, nullptr, nullptr},
+                {nullptr, nullptr, nullptr, new King(3,6, BLACK), nullptr, nullptr, nullptr, nullptr},
+                {new King(0,7, WHITE), nullptr, new Bishop(2,7, BLACK), nullptr, nullptr, nullptr, nullptr, nullptr},
+            };
+            for (int column = 0; column < 8; column++)
+            {
+                for (int row = 0; row < 8; row++)
+                {
+                    board[column][row] = pieces2[column][row];
+                    addItem(pieces2[column][row]);
+                }
+            }
+        }
+        else if (predefined == 3)
+        {
+            Piece::ChessPiece* pieces3[8][8] =
+            {
+                {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr},
+                {nullptr, nullptr, nullptr, nullptr, nullptr, new Bishop(5,1, BLACK), nullptr, nullptr},
+                {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, new King(6,2, BLACK)},
+                {nullptr, nullptr, nullptr, nullptr, new Bishop(4,3, BLACK), nullptr, nullptr, nullptr},
+                {new Rook(0, 4, WHITE), new Rook(1,4, WHITE), nullptr, nullptr, nullptr, nullptr, nullptr, nullptr},
+                {new King(0, 5, WHITE), nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr},
+                {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr},
+                {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr},
+            };
+            for (int column = 0; column < 8; column++)
+            {
+                for (int row = 0; row < 8; row++)
+                {
+                    board[column][row] = pieces3[column][row];
+                    addItem(pieces3[column][row]);
+                }
             }
         }
     }
@@ -272,8 +340,6 @@ namespace Chess {
         }
         return true;
     }
-
-
 
 
     // Déplacement des pièces et calcul du jeu

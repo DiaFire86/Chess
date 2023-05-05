@@ -9,11 +9,21 @@ MainWindow::MainWindow(int width = 0, int height = 0) : boardWidth(width), board
 
 	QPushButton* playButton = new QPushButton("Demarrer une partie classique\n", this);
 	QPushButton* customButton = new QPushButton("Demarrer une partie personnalisee\n", this);
-	playButton->setGeometry(boardWidth/2 - 100, boardHeight/2 - 90, 200, 50);
-	customButton->setGeometry(boardWidth / 2 - 100, boardHeight / 2 - 25, 200, 50);
+	QPushButton* predefined1Button = new QPushButton("Demarrer la partie predefinie 1 (Unzicker, 1949)\n", this);
+	QPushButton* predefined2Button = new QPushButton("Demarrer la partie predefinie 2 (Ponziani, 1782)\n", this);
+	QPushButton* predefined3Button = new QPushButton("Demarrer la partie predefinie 3 (Tilburg, 1991)\n", this);
+	playButton->setGeometry(boardWidth/2 - 125, boardHeight/2 - 145, 250, 50);
+	customButton->setGeometry(boardWidth / 2 - 125, boardHeight / 2 - 85, 250, 50);
+	predefined1Button->setGeometry(boardWidth / 2 - 125, boardHeight / 2 - 25, 250, 50);
+	predefined2Button->setGeometry(boardWidth / 2 - 125, boardHeight / 2 + 35, 250, 50);
+	predefined3Button->setGeometry(boardWidth / 2 - 125, boardHeight / 2 + 95, 250, 50);
 
 	QObject::connect(playButton, &QPushButton::clicked, this, &MainWindow::openRegularChessWidget);
 	QObject::connect(customButton, &QPushButton::clicked, this, &MainWindow::openCustomChessWidget);
+	QObject::connect(predefined1Button, &QPushButton::clicked, this, &MainWindow::openPredefined1ChessWidget);
+	QObject::connect(predefined2Button, &QPushButton::clicked, this, &MainWindow::openPredefined2ChessWidget);
+	QObject::connect(predefined3Button, &QPushButton::clicked, this, &MainWindow::openPredefined3ChessWidget);
+
 }
 
 void MainWindow::openRegularChessWidget()
@@ -23,7 +33,7 @@ void MainWindow::openRegularChessWidget()
 		chessWidget = new QWidget(this);
 		chessWidget->setWindowTitle("Plateau de jeu");
 		QGraphicsView* view = new QGraphicsView(chessWidget);
-		Chess::ChessBoard* chessBoard = new Chess::ChessBoard(view, boardWidth, boardHeight);
+		Chess::ChessBoard* chessBoard = new Chess::ChessBoard(view, boardWidth, boardHeight, 0);
 		this->setFixedSize(boardWidth + 10, boardHeight + 200);
 		view->setFixedSize(boardWidth + 10, boardHeight + 200);
 		view->setScene(chessBoard);
@@ -58,5 +68,50 @@ void MainWindow::openCustomChessWidget()
 
 		QObject::connect(playButtonWhite, &QPushButton::clicked, customChessBoard, &Chess::ChessBoard::startGameWhite);
 		QObject::connect(playButtonBlack, &QPushButton::clicked, customChessBoard, &Chess::ChessBoard::startGameBlack);
+	}
+}
+
+void MainWindow::openPredefined1ChessWidget()
+{
+	if (!chessWidget)
+	{
+		chessWidget = new QWidget(this);
+		chessWidget->setWindowTitle("Plateau de jeu");
+		QGraphicsView* view = new QGraphicsView(chessWidget);
+		Chess::ChessBoard* chessBoard = new Chess::ChessBoard(view, boardWidth, boardHeight, 1);
+		this->setFixedSize(boardWidth + 10, boardHeight + 200);
+		view->setFixedSize(boardWidth + 10, boardHeight + 200);
+		view->setScene(chessBoard);
+		chessWidget->show();
+	}
+}
+
+void MainWindow::openPredefined2ChessWidget()
+{
+	if (!chessWidget)
+	{
+		chessWidget = new QWidget(this);
+		chessWidget->setWindowTitle("Plateau de jeu");
+		QGraphicsView* view = new QGraphicsView(chessWidget);
+		Chess::ChessBoard* chessBoard = new Chess::ChessBoard(view, boardWidth, boardHeight, 2);
+		this->setFixedSize(boardWidth + 10, boardHeight + 200);
+		view->setFixedSize(boardWidth + 10, boardHeight + 200);
+		view->setScene(chessBoard);
+		chessWidget->show();
+	}
+}
+
+void MainWindow::openPredefined3ChessWidget()
+{
+	if (!chessWidget)
+	{
+		chessWidget = new QWidget(this);
+		chessWidget->setWindowTitle("Plateau de jeu");
+		QGraphicsView* view = new QGraphicsView(chessWidget);
+		Chess::ChessBoard* chessBoard = new Chess::ChessBoard(view, boardWidth, boardHeight, 3);
+		this->setFixedSize(boardWidth + 10, boardHeight + 200);
+		view->setFixedSize(boardWidth + 10, boardHeight + 200);
+		view->setScene(chessBoard);
+		chessWidget->show();
 	}
 }

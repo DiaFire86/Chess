@@ -6,11 +6,11 @@ namespace Chess {
     class ChessBoard : public QGraphicsScene
     {
     public:
-        ChessBoard(QGraphicsView* view, int width, int height);
+        ChessBoard(QGraphicsView* view, int width, int height, int predefined);
         ChessBoard(QGraphicsView* view, int width, int height, bool init);
 
         void initBoard();
-        void initPieces();
+        void initPieces(int predefined = 0);
         void dispPieces();
         void startGameWhite();
         void startGameBlack();
