@@ -2,6 +2,7 @@
 #include "mainwindow.h"
 #include <QtWidgets/QApplication>
 #include <QPushButton>
+#include "verification_allocation.hpp"
 
 int main(int argc, char *argv[])
 {
