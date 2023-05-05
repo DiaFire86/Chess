@@ -461,11 +461,11 @@ namespace Chess {
                                 choice->setLayout(layout);
                                 choice->show();
 
-                                QObject::connect(pawnButton, &QPushButton::clicked, this, [this, xCoord, yCoord]() {pawnPromotion(xCoord, yCoord); });
-                                QObject::connect(rookButton, &QPushButton::clicked, this, [this, xCoord, yCoord]() {rookPromotion(xCoord, yCoord); });
-                                QObject::connect(bishopButton, &QPushButton::clicked, this, [this, xCoord, yCoord]() {bishopPromotion(xCoord, yCoord); });
-                                QObject::connect(knightButton, &QPushButton::clicked, this, [this, xCoord, yCoord]() {knightPromotion(xCoord, yCoord); });
-                                QObject::connect(queenButton, &QPushButton::clicked, this, [this, xCoord, yCoord]() {queenPromotion(xCoord, yCoord); });
+                                QObject::connect(pawnButton, &QPushButton::clicked, this, [this, layout, choice, pawnButton, rookButton, bishopButton, knightButton, queenButton, xCoord, yCoord]() {pawnPromotion(xCoord, yCoord); delete pawnButton; delete rookButton; delete bishopButton; delete knightButton; delete queenButton; delete layout; delete choice; });
+                                QObject::connect(rookButton, &QPushButton::clicked, this, [this, layout, choice, pawnButton, rookButton, bishopButton, knightButton, queenButton, xCoord, yCoord]() {rookPromotion(xCoord, yCoord); delete pawnButton; delete rookButton; delete bishopButton; delete knightButton; delete queenButton; delete layout; delete choice; });
+                                QObject::connect(bishopButton, &QPushButton::clicked, this, [this, layout, choice, pawnButton, rookButton, bishopButton, knightButton, queenButton, xCoord, yCoord]() {bishopPromotion(xCoord, yCoord); delete pawnButton; delete rookButton; delete bishopButton; delete knightButton; delete queenButton; delete layout; delete choice; });
+                                QObject::connect(knightButton, &QPushButton::clicked, this, [this, layout, choice, pawnButton, rookButton, bishopButton, knightButton, queenButton, xCoord, yCoord]() {knightPromotion(xCoord, yCoord); delete pawnButton; delete rookButton; delete bishopButton; delete knightButton; delete queenButton; delete layout; delete choice; });
+                                QObject::connect(queenButton, &QPushButton::clicked, this, [this, layout, choice, pawnButton, rookButton, bishopButton, knightButton, queenButton, xCoord, yCoord]() {queenPromotion(xCoord, yCoord);; delete pawnButton; delete rookButton; delete bishopButton; delete knightButton; delete queenButton; delete layout; delete choice; });
                             }
 
                             // Changement de la position de la pièce pour l'affichage
@@ -556,12 +556,27 @@ namespace Chess {
                     {
                         TypePiece type = chessPiece->getType();
                         Piece::ChessPiece* newPiece;
-                        if (type == PAWN) { newPiece = new Pawn(yCoord, xCoord, chessPiece->getColor()); }
-                        else if (type == ROOK) { newPiece = new Rook(yCoord, xCoord, chessPiece->getColor()); }
-                        else if (type == KNIGHT) { newPiece = new Knight(yCoord, xCoord, chessPiece->getColor()); }
-                        else if (type == BISHOP) { newPiece = new Bishop(yCoord, xCoord, chessPiece->getColor()); }
-                        else if (type == KING) { newPiece = new King(yCoord, xCoord, chessPiece->getColor()); }
-                        else if (type == QUEEN) { newPiece = new Queen(yCoord, xCoord, chessPiece->getColor()); }
+                        switch (type)
+                        {
+                        case PAWN:
+                            newPiece = new Pawn(yCoord, xCoord, chessPiece->getColor());
+                            break;
+                        case ROOK:
+                            newPiece = new Rook(yCoord, xCoord, chessPiece->getColor());
+                            break;
+                        case KNIGHT:
+                            newPiece = new Knight(yCoord, xCoord, chessPiece->getColor());
+                            break;
+                        case BISHOP:
+                            newPiece = new Bishop(yCoord, xCoord, chessPiece->getColor());
+                            break;
+                        case KING:
+                            newPiece = new King(yCoord, xCoord, chessPiece->getColor());
+                            break;
+                        case QUEEN:
+                            newPiece = new Queen(yCoord, xCoord, chessPiece->getColor());
+                            break;
+                        }
 
                         // Vérification du nombre de rois
                         if (King::kingCount() > 4)
@@ -591,5 +606,17 @@ namespace Chess {
         event->accept();
     }
 
-    ChessBoard::~ChessBoard() {}
+    ChessBoard::~ChessBoard() 
+    {
+        for (int column = 0; column < 8; column++)
+        {
+            for (int row = 0; row < 8; row++)
+            {
+                if (board[column][row] != nullptr)
+                {
+                    delete board[column][row];
+                }
+            }
+        }
+    }
 }

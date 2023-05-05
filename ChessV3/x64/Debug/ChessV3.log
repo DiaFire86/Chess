@@ -1,4 +1,2 @@
-﻿  king.cpp
-  knight.cpp
-D:\Travail\Logiciel\INF1015\Projet\ChessV3\ChessV3\king.cpp(35): warning C4715: 'King::kingCounted' : les chemins de contrôle ne retournent pas tous une valeur
+﻿  chessboard.cpp
   ChessV3.vcxproj -> D:\Travail\Logiciel\INF1015\Projet\ChessV3\x64\Debug\ChessV3.exe
