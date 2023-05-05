@@ -50,122 +50,25 @@ QList<QPointF> King::possibleMoves(QGraphicsPixmapItem* (&board)[8][8], ChessPie
 {
     QList<QPointF> moves;
 
-    // Haut, Haut-Droite, Haut-Gauche
-    if (_yCoord - 1 >= 0)
+    const int directions[8][2] = { {1, 0}, {-1, 0}, {0, 1}, {0, -1}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1} };
+    for (const auto& direction : directions)
     {
-        // Haut
-        QPointF up(_xCoord, _yCoord - 1);
-        if (board[_xCoord][_yCoord - 1] == nullptr)
-        {
-            moves.append(up);
-        }
-        else if (dynamic_cast<ChessPiece*>(board[_xCoord][_yCoord - 1])->getColor() != _color)
-        {
-            moves.append(up);
-        }
+        const int xDirection = direction[0];
+        const int yDirection = direction[1];
 
-        // Haut-Droite
-        if (_xCoord + 1 <= 7)
-        {
-            QPointF upRight(_xCoord + 1, _yCoord - 1);
-            if (board[_xCoord + 1][_yCoord - 1] == nullptr)
-            {
-                moves.append(upRight);
-            }
-            else if (dynamic_cast<ChessPiece*>(board[_xCoord + 1][_yCoord - 1])->getColor() != _color)
-            {
-                moves.append(upRight);
-            }
+        const int x = _xCoord +  xDirection;
+        const int y = _yCoord +  yDirection;
 
-        }
-
-        // Haut-Gauche
-        if (_xCoord - 1 >= 0)
+        // Vérifie si position est valide
+        if (x >= 0 && x <= 7 && y >= 0 && y <= 7)
         {
-            QPointF upLeft(_xCoord - 1, _yCoord - 1);
-            if (board[_xCoord - 1][_yCoord - 1] == nullptr)
+            if (board[x][y] == nullptr)
             {
-                moves.append(upLeft);
+                moves.append(QPointF(x, y));
             }
-            else if (dynamic_cast<ChessPiece*>(board[_xCoord - 1][_yCoord - 1])->getColor() != _color)
+            else if (dynamic_cast<ChessPiece*>(board[x][y])->getColor() != _color)
             {
-                moves.append(upLeft);
-            }
-        }
-    }
-
-    // Bas, Bas-Droite, Bas-Gauche
-    if (_yCoord + 1 <= 7)
-    {
-        // Bas
-        QPointF down(_xCoord, _yCoord + 1);
-        if (board[_xCoord][_yCoord + 1] == nullptr)
-        {
-            moves.append(down);
-        }
-        else if (dynamic_cast<ChessPiece*>(board[_xCoord][_yCoord + 1])->getColor() != _color)
-        {
-            moves.append(down);
-        }
-
-        // Bas-Droite
-        if (_xCoord + 1 <= 7)
-        {
-            QPointF downRight(_xCoord + 1, _yCoord + 1);
-            if (board[_xCoord + 1][_yCoord + 1] == nullptr)
-            {
-                moves.append(downRight);
-            }
-            else if (dynamic_cast<ChessPiece*>(board[_xCoord + 1][_yCoord + 1])->getColor() != _color)
-            {
-                moves.append(downRight);
-            }
-
-        }
-
-        // Bas-Gauche
-        if (_xCoord - 1 >= 0)
-        {
-            QPointF downLeft(_xCoord - 1, _yCoord + 1);
-            if (board[_xCoord - 1][_yCoord + 1] == nullptr)
-            {
-                moves.append(downLeft);
-            }
-            else if (dynamic_cast<ChessPiece*>(board[_xCoord - 1][_yCoord + 1])->getColor() != _color)
-            {
-                moves.append(downLeft);
-            }
-        }
-    }
-
-    // Droite
-    if (_xCoord + 1 <= 7)
-    {
-        QPointF right(_xCoord + 1, _yCoord);
-        {
-            if (board[_xCoord + 1][_yCoord] == nullptr)
-            {
-                moves.append(right);
-            }
-            else if (dynamic_cast<ChessPiece*>(board[_xCoord + 1][_yCoord])->getColor() != _color)
-            {
-                moves.append(right);
-            }
-        }
-    }
-
-    // Gauche
-    if (_xCoord - 1 >= 0)
-    {
-        QPointF left(_xCoord - 1, _yCoord);
-        {
-            if (board[_xCoord - 1][_yCoord] == nullptr)
-            {
-                moves.append(left);
-            }
-            else if (dynamic_cast<ChessPiece*>(board[_xCoord - 1][_yCoord])->getColor() != _color)
-            {
-                moves.append(left);
+                moves.append(QPointF(x, y));
             }
         }
     }
