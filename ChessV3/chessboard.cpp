@@ -10,16 +10,17 @@
 #include "display.h"
 
 namespace Chess {
-    ChessBoard::ChessBoard(QGraphicsView* view = nullptr, int width = 0, int height = 0, int predefined = 0) : QGraphicsScene(0, 0, width + 10, height + 10), boardWidth(width), boardHeight(height), m_view(view), selectedPiece(nullptr), isStarted(true), isPaused(false)
+    ChessBoard::ChessBoard(QGraphicsView* view = nullptr, int width = 0, int height = 0, int predefined = 0, bool init = true) : QGraphicsScene(0, 0, width + 10, height + 10), boardWidth(width), boardHeight(height), m_view(view), selectedPiece(nullptr), isStarted(init), isPaused(false)
     {
         initBoard();
-        initPieces(predefined);
-    }
-
-    ChessBoard::ChessBoard(QGraphicsView* view, int width, int height, bool init) : QGraphicsScene(0, 0, width + 10, height + 10), boardWidth(width), boardHeight(height), m_view(view), selectedPiece(nullptr), isStarted(init), isPaused(false)
-    {
-        initBoard();
-        dispPieces();
+        if (init)
+        {
+            initPieces(predefined);
+        }
+        else
+        {
+            dispPieces();
+        }
     }
 
     void ChessBoard::initBoard()
