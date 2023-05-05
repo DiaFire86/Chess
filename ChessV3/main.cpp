@@ -6,7 +6,6 @@
 
 int main(int argc, char *argv[])
 {
-
     QApplication application(argc, argv);
 
     int boardWidth = 720;

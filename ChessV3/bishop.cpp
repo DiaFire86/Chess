@@ -23,119 +23,39 @@ QList<QPointF> Bishop::possibleMoves(QGraphicsPixmapItem* (&board)[8][8], ChessP
 {
     QList<QPointF> moves;
 
-    // Déplacement Haut-Droite
-    bool canMooveUpRight = true;
-    int cpt = 1;
-    while (canMooveUpRight)
+    // Toutes les directions possibles
+    const int directions[8][2] = { {1, 1}, {1, -1}, {-1, 1}, {-1, -1} };
+    for (const auto& direction : directions)
     {
-        if ((_yCoord - cpt >= 0) && (_xCoord + cpt <= 7))
+        const int xDirection = direction[0];
+        const int yDirection = direction[1];
+
+        for (int i = 1; i < 8; ++i)
         {
-            if (board[_xCoord + cpt][_yCoord - cpt] == nullptr)
+            const int x = _xCoord + i * xDirection;
+            const int y = _yCoord + i * yDirection;
+
+            // Vérifie si position est valide
+            if (x < 0 || x > 7 || y < 0 || y > 7)
             {
-                moves.append(QPointF(_xCoord + cpt, _yCoord - cpt));
-                cpt++;
+                break;
             }
-            else if (dynamic_cast<ChessPiece*>(board[_xCoord + cpt][_yCoord - cpt])->getColor() != _color)
+
+            // Vérifie si case contient deja une piece
+            if (board[x][y] == nullptr)
             {
-                moves.append(QPointF(_xCoord + cpt, _yCoord - cpt));
-                canMooveUpRight = false;
+                moves.append(QPointF(x, y));
             }
-            else if (dynamic_cast<ChessPiece*>(board[_xCoord + cpt][_yCoord - cpt])->getColor() == _color)
+            else if (dynamic_cast<ChessPiece*>(board[x][y])->getColor() != _color)
             {
-                canMooveUpRight = false;
+                moves.append(QPointF(x, y));
+                break;
             }
-        }
-        else
-        {
-            canMooveUpRight = false;
+            else
+            {
+                break;
+            }
         }
     }
-
-    // Déplacement Bas-Droite
-    bool canMooveDownRight = true;
-    cpt = 1;
-    while (canMooveDownRight)
-    {
-        if ((_yCoord + cpt <= 7) && (_xCoord + cpt <= 7))
-        {
-            if (board[_xCoord + cpt][_yCoord + cpt] == nullptr)
-            {
-                moves.append(QPointF(_xCoord + cpt, _yCoord + cpt));
-                cpt++;
-            }
-            else if (dynamic_cast<ChessPiece*>(board[_xCoord + cpt][_yCoord + cpt])->getColor() != _color)
-            {
-                moves.append(QPointF(_xCoord + cpt, _yCoord + cpt));
-                canMooveDownRight = false;
-            }
-            else if (dynamic_cast<ChessPiece*>(board[_xCoord + cpt][_yCoord + cpt])->getColor() == _color)
-            {
-                canMooveDownRight = false;
-            }
-        }
-        else
-        {
-            canMooveDownRight = false;
-        }
-    }
-
-    // Déplacement Bas-Gauche
-    bool canMooveDownLeft = true;
-    cpt = 1;
-    while (canMooveDownLeft)
-    {
-        if ((_yCoord + cpt <= 7 ) && (_xCoord - cpt >= 0))
-        {
-            if (board[_xCoord - cpt][_yCoord + cpt] == nullptr)
-            {
-                moves.append(QPointF(_xCoord - cpt, _yCoord + cpt));
-                cpt++;
-            }
-            else if (dynamic_cast<ChessPiece*>(board[_xCoord - cpt][_yCoord + cpt])->getColor() != _color)
-            {
-                moves.append(QPointF(_xCoord - cpt, _yCoord + cpt));
-                canMooveDownLeft = false;
-            }
-            else if (dynamic_cast<ChessPiece*>(board[_xCoord - cpt][_yCoord + cpt])->getColor() == _color)
-            {
-                canMooveDownLeft = false;
-            }
-
-        }
-        else
-        {
-            canMooveDownLeft = false;
-        }
-    }
-
-    // Déplacement Haut-Gauche
-    bool canMooveUpLeft = true;
-    cpt = 1;
-    while (canMooveUpLeft)
-    {
-        if ((_yCoord - cpt >= 0) && (_xCoord - cpt >= 0))
-        {
-            if (board[_xCoord - cpt][_yCoord - cpt] == nullptr)
-            {
-                moves.append(QPointF(_xCoord - cpt, _yCoord - cpt));
-                cpt++;
-            }
-            else if (dynamic_cast<ChessPiece*>(board[_xCoord - cpt][_yCoord - cpt])->getColor() != _color)
-            {
-                moves.append(QPointF(_xCoord - cpt, _yCoord - cpt));
-                canMooveUpLeft = false;
-            }
-            else if (dynamic_cast<ChessPiece*>(board[_xCoord - cpt][_yCoord - cpt])->getColor() == _color)
-            {
-                canMooveUpLeft = false;
-            }
-
-        }
-        else
-        {
-            canMooveUpLeft = false;
-        }
-    }
-
     return moves;
 }
