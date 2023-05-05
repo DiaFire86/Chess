@@ -1,1 +1,19 @@
-﻿
+﻿  Reading Qt configuration (D:/Qt/5.15.2/msvc2019_64/bin/qmake)
+  stdafx.cpp
+  verification_allocation.cpp
+  bishop.cpp
+  chesspiece.cpp
+  chessboard.cpp
+  display.cpp
+  king.cpp
+  knight.cpp
+  main.cpp
+  mainwindow.cpp
+  pawn.cpp
+  queen.cpp
+  rook.cpp
+D:\Travail\Logiciel\INF1015\Projet\ChessV3\ChessV3\verification_allocation.cpp(12,1): warning C4005: 'NOMINMAX' : redéfinition de macro
+D:\Qt\5.15.2\msvc2019_64\include\QtCore\qt_windows.h(62,1): message : voir la définition précédente de 'NOMINMAX' (compilation du fichier source verification_allocation.cpp)
+D:\Travail\Logiciel\INF1015\Projet\ChessV3\ChessV3\king.cpp(35): warning C4715: 'King::kingCounted' : les chemins de contrôle ne retournent pas tous une valeur
+  qrc_chessv3.cpp
+  ChessV3.vcxproj -> D:\Travail\Logiciel\INF1015\Projet\ChessV3\x64\Debug\ChessV3.exe
