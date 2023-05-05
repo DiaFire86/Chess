@@ -15,9 +15,6 @@ private:
 	int boardWidth = 0;
 	int boardHeight = 0;
 
-	void openRegularChessWidget();
+	void openChessWidget(int predefined = 0);
 	void openCustomChessWidget();
-	void openPredefined1ChessWidget();
-	void openPredefined2ChessWidget();
-	void openPredefined3ChessWidget();
 };

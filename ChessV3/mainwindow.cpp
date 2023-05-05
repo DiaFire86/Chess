@@ -19,23 +19,23 @@ MainWindow::MainWindow(int width = 0, int height = 0) : boardWidth(width), board
 	predefined2Button->setGeometry(boardWidth / 2 - 125, boardHeight / 2 + 35, 250, 50);
 	predefined3Button->setGeometry(boardWidth / 2 - 125, boardHeight / 2 + 95, 250, 50);
 
-	QObject::connect(playButton, &QPushButton::clicked, this, [this, playButton, customButton, predefined1Button, predefined2Button, predefined3Button]() {MainWindow::openRegularChessWidget(); delete playButton; delete customButton; delete predefined1Button; delete predefined2Button; delete predefined3Button; });
+	QObject::connect(playButton, &QPushButton::clicked, this, [this, playButton, customButton, predefined1Button, predefined2Button, predefined3Button]() {MainWindow::openChessWidget(0); delete playButton; delete customButton; delete predefined1Button; delete predefined2Button; delete predefined3Button; });
 	QObject::connect(customButton, &QPushButton::clicked, this, [this, playButton, customButton, predefined1Button, predefined2Button, predefined3Button]() {MainWindow::openCustomChessWidget(); delete playButton; delete customButton; delete predefined1Button; delete predefined2Button; delete predefined3Button; });
-	QObject::connect(predefined1Button, &QPushButton::clicked, this, [this, playButton, customButton, predefined1Button, predefined2Button, predefined3Button]() {MainWindow::openPredefined1ChessWidget(); delete playButton; delete customButton; delete predefined1Button; delete predefined2Button; delete predefined3Button; });
-	QObject::connect(predefined2Button, &QPushButton::clicked, this, [this, playButton, customButton, predefined1Button, predefined2Button, predefined3Button]() {MainWindow::openPredefined2ChessWidget(); delete playButton; delete customButton; delete predefined1Button; delete predefined2Button; delete predefined3Button; });
-	QObject::connect(predefined3Button, &QPushButton::clicked, this, [this, playButton, customButton, predefined1Button, predefined2Button, predefined3Button]() {MainWindow::openPredefined3ChessWidget(); delete playButton; delete customButton; delete predefined1Button; delete predefined2Button; delete predefined3Button; });
+	QObject::connect(predefined1Button, &QPushButton::clicked, this, [this, playButton, customButton, predefined1Button, predefined2Button, predefined3Button]() {MainWindow::openChessWidget(1); delete playButton; delete customButton; delete predefined1Button; delete predefined2Button; delete predefined3Button; });
+	QObject::connect(predefined2Button, &QPushButton::clicked, this, [this, playButton, customButton, predefined1Button, predefined2Button, predefined3Button]() {MainWindow::openChessWidget(2); delete playButton; delete customButton; delete predefined1Button; delete predefined2Button; delete predefined3Button; });
+	QObject::connect(predefined3Button, &QPushButton::clicked, this, [this, playButton, customButton, predefined1Button, predefined2Button, predefined3Button]() {MainWindow::openChessWidget(3); delete playButton; delete customButton; delete predefined1Button; delete predefined2Button; delete predefined3Button; });
 
 
 }
 
-void MainWindow::openRegularChessWidget()
+void MainWindow::openChessWidget(int predefined)
 {
 	if (!chessWidget)
 	{
 		chessWidget = new QWidget(this);
 		chessWidget->setWindowTitle("Plateau de jeu");
 		QGraphicsView* view = new QGraphicsView(chessWidget);
-		Chess::ChessBoard* chessBoard = new Chess::ChessBoard(view, boardWidth, boardHeight, 0);
+		Chess::ChessBoard* chessBoard = new Chess::ChessBoard(view, boardWidth, boardHeight, predefined);
 		this->setFixedSize(boardWidth + 10, boardHeight + 200);
 		view->setFixedSize(boardWidth + 10, boardHeight + 200);
 		view->setScene(chessBoard);
@@ -74,54 +74,5 @@ void MainWindow::openCustomChessWidget()
 		QObject::connect(playButtonBlack, &QPushButton::clicked, customChessBoard, &Chess::ChessBoard::startGameBlack);
 
 		QObject::connect(customChessBoard, &QObject::destroyed, this, [view, customChessBoard, playButtonWhite, playButtonBlack, layout]() { delete playButtonWhite; delete playButtonBlack; delete layout; delete customChessBoard; delete view; });
-
-	}
-}
-
-void MainWindow::openPredefined1ChessWidget()
-{
-	if (!chessWidget)
-	{
-		chessWidget = new QWidget(this);
-		chessWidget->setWindowTitle("Plateau de jeu");
-		QGraphicsView* view = new QGraphicsView(chessWidget);
-		Chess::ChessBoard* chessBoard = new Chess::ChessBoard(view, boardWidth, boardHeight, 1);
-		this->setFixedSize(boardWidth + 10, boardHeight + 200);
-		view->setFixedSize(boardWidth + 10, boardHeight + 200);
-		view->setScene(chessBoard);
-		chessWidget->show();
-		QObject::connect(chessBoard, &QObject::destroyed, this, [view, chessBoard]() { delete chessBoard; delete view; });
-	}
-}
-
-void MainWindow::openPredefined2ChessWidget()
-{
-	if (!chessWidget)
-	{
-		chessWidget = new QWidget(this);
-		chessWidget->setWindowTitle("Plateau de jeu");
-		QGraphicsView* view = new QGraphicsView(chessWidget);
-		Chess::ChessBoard* chessBoard = new Chess::ChessBoard(view, boardWidth, boardHeight, 2);
-		this->setFixedSize(boardWidth + 10, boardHeight + 200);
-		view->setFixedSize(boardWidth + 10, boardHeight + 200);
-		view->setScene(chessBoard);
-		chessWidget->show();
-		QObject::connect(chessBoard, &QObject::destroyed, this, [view, chessBoard]() { delete chessBoard; delete view; });
-	}
-}
-
-void MainWindow::openPredefined3ChessWidget()
-{
-	if (!chessWidget)
-	{
-		chessWidget = new QWidget(this);
-		chessWidget->setWindowTitle("Plateau de jeu");
-		QGraphicsView* view = new QGraphicsView(chessWidget);
-		Chess::ChessBoard* chessBoard = new Chess::ChessBoard(view, boardWidth, boardHeight, 3);
-		this->setFixedSize(boardWidth + 10, boardHeight + 200);
-		view->setFixedSize(boardWidth + 10, boardHeight + 200);
-		view->setScene(chessBoard);
-		chessWidget->show();
-		QObject::connect(chessBoard, &QObject::destroyed, this, [view, chessBoard]() { delete chessBoard; delete view; });
 	}
 }
