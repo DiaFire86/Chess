@@ -36,11 +36,38 @@ void MainWindow::openChessWidget(int predefined, bool init)
 		chessWidget->setWindowTitle("Plateau de jeu");
 		QGraphicsView* view = new QGraphicsView(chessWidget);
 		Chess::ChessBoard* chessBoard = new Chess::ChessBoard(view, boardWidth, boardHeight, predefined, init);
-		this->setFixedSize(boardWidth + 10, boardHeight + 200);
-		view->setFixedSize(boardWidth + 10, boardHeight + 200);
-		view->setScene(chessBoard);
-		chessWidget->show();
 
-		QObject::connect(chessBoard, &QObject::destroyed, this, [view, chessBoard]() { delete chessBoard; delete view; });
+		if (!init)
+		{
+			QGridLayout* layout = new QGridLayout(chessWidget);
+
+			QPushButton* playButtonWhite = new QPushButton("les blancs\n demarrent\n la\n partie", this);
+			QPushButton* playButtonBlack = new QPushButton("les noirs\n demarrent\n la\n partie", this);
+			playButtonWhite->setGeometry(10, 10, 200, 50);
+			playButtonBlack->setGeometry(10, 10, 200, 50);
+			layout->addWidget(playButtonWhite, 0, 1, Qt::AlignTop);
+			layout->addWidget(playButtonBlack, 0, 1, Qt::AlignBottom);
+
+			this->setFixedSize(boardWidth + 130, boardHeight + 220);
+			view->setFixedSize(boardWidth + 10, boardHeight + 200);
+			view->setScene(chessBoard);
+			layout->addWidget(view, 0, 0);
+
+			chessWidget->setLayout(layout);
+			chessWidget->show();
+
+			QObject::connect(playButtonWhite, &QPushButton::clicked, chessBoard, &Chess::ChessBoard::startGameWhite);
+			QObject::connect(playButtonBlack, &QPushButton::clicked, chessBoard, &Chess::ChessBoard::startGameBlack);
+			QObject::connect(chessBoard, &QObject::destroyed, this, [view, chessBoard, playButtonWhite, playButtonBlack]() { delete chessBoard; delete view; delete playButtonWhite; delete playButtonBlack; });
+		}
+		else 
+		{
+			this->setFixedSize(boardWidth + 10, boardHeight + 200);
+			view->setFixedSize(boardWidth + 10, boardHeight + 200);
+			view->setScene(chessBoard);
+			chessWidget->show();
+
+			QObject::connect(chessBoard, &QObject::destroyed, this, [view, chessBoard]() { delete chessBoard; delete view; });
+		}
 	}
 }
