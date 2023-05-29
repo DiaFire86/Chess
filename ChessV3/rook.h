@@ -10,6 +10,7 @@ public:
 
     QList<QPointF> possibleMoves(QGraphicsPixmapItem* (&board)[8][8], ChessPiece* chessPiece, QPointF pos) const override;
 
+    bool asMooved;
 
 private:
     static const QString WHITE_ROOK_IMAGE_URL;

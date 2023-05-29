@@ -472,9 +472,60 @@ namespace Chess {
                             // Changement de la position de la pièce pour l'affichage
                             selectedPiece->setPos(newPosCorner); 
 
+                            // Si c'était un Roque de roi, changer la position de la tour :
+                            if (chessPiece->getType() == KING)
+                            {
+                                if (xCoord == 2 && yCoord == 0)
+                                {
+                                    QGraphicsItem* rookQG = itemAt(QPointF(0.5 * cellSize, 0.5 * cellSize), QTransform());
+                                    Piece::ChessPiece* rook = dynamic_cast<Piece::ChessPiece*>(board[0][0]);
+                                    rook->changeCoord(0, 3);
+                                    board[3][0] = board[0][0];
+                                    board[0][0] = nullptr;
+                                    rookQG->setPos(QPointF(3 * cellSize, 0));
+                                }
+                                if (xCoord == 6 && yCoord == 0)
+                                {
+                                    QGraphicsItem* rookQG = itemAt(QPointF(7.5 * cellSize, 0.5 * cellSize), QTransform());
+                                    Piece::ChessPiece* rook = dynamic_cast<Piece::ChessPiece*>(board[7][0]);
+                                    rook->changeCoord(0, 5);
+                                    board[5][0] = board[7][0];
+                                    board[7][0] = nullptr;
+                                    rookQG->setPos(QPointF(5 * cellSize, 0));
+                                }
+                                if (xCoord == 2 && yCoord == 7)
+                                {
+                                    QGraphicsItem* rookQG = itemAt(QPointF(0.5 * cellSize, 7.5 * cellSize), QTransform());
+                                    Piece::ChessPiece* rook = dynamic_cast<Piece::ChessPiece*>(board[0][7]);
+                                    rook->changeCoord(7, 3);
+                                    board[3][7] = board[0][7];
+                                    board[0][7] = nullptr;
+                                    rookQG->setPos(QPointF(3 * cellSize, 7 * cellSize));
+                                }
+                                if (xCoord == 6 && yCoord == 7)
+                                {
+                                    QGraphicsItem* rookQG = itemAt(QPointF(7.5 * cellSize, 7.5 * cellSize), QTransform());
+                                    Piece::ChessPiece* rook = dynamic_cast<Piece::ChessPiece*>(board[7][7]);
+                                    rook->changeCoord(7, 5);
+                                    board[5][7] = board[7][7];
+                                    board[0][7] = nullptr;
+                                    rookQG->setPos(QPointF(5 * cellSize, 7 * cellSize));
+                                }
+                            }
+
                             // Changement de tour si la position à changée
                             if (isWhiteTurn && initialPosCorner != newPosCorner)
                             {
+                                if (chessPiece->getType() == KING)
+                                {
+                                    King* king = dynamic_cast<King*>(chessPiece);
+                                    king->asMooved = true;
+                                }
+                                if (chessPiece->getType() == ROOK)
+                                {
+                                    Rook* rook = dynamic_cast<Rook*>(chessPiece);
+                                    rook->asMooved = true;
+                                }
                                 isWhiteTurn = false;
                                 if (this->isBlackKingInCheckMate(board))
                                 {
@@ -484,6 +535,16 @@ namespace Chess {
                             }
                             else if (!isWhiteTurn && initialPosCorner != newPosCorner)
                             {
+                                if (chessPiece->getType() == KING)
+                                {
+                                    King* king = dynamic_cast<King*>(chessPiece);
+                                    king->asMooved = true;
+                                }
+                                if (chessPiece->getType() == ROOK)
+                                {
+                                    Rook* rook = dynamic_cast<Rook*>(chessPiece);
+                                    rook->asMooved = true;
+                                }
                                 isWhiteTurn = true;
                                 if (this->isWhiteKingInCheckMate(board))
                                 {
@@ -521,6 +582,18 @@ namespace Chess {
                     // On vérifie que la pièce est lachée sur le board
                     if (xCoord < 8 && newPos.x() >= 0 && yCoord < 8 && newPos.y() >= 0)
                     {
+                        // Si la pièce est un roi qui change de position, on dit que le roi as bougé
+                        if (chessPiece->getType() == KING && initialPosCorner != newPosCorner)
+                        {
+                            King* king = dynamic_cast<King*>(chessPiece);
+                            king->asMooved = true;
+                        }
+                        if (chessPiece->getType() == ROOK)
+                        {
+                            Rook* rook = dynamic_cast<Rook*>(chessPiece);
+                            rook->asMooved = true;
+                        }
+
                         // Ajustement des coordonnées dans le tableau
                         int init_xCoord = initialPos.x() / cellSize;
                         int init_yCoord = initialPos.y() / cellSize;

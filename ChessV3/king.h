@@ -13,6 +13,8 @@ public:
     void decreaseKingCount() { --_kingCounter; }
     static int kingCount() { return _kingCounter; };
     static int kingCounted();
+    bool asMooved;
+
 
     ~King() { decreaseKingCount(); }
 

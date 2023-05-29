@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "king.h"
+#include "rook.h"
 
 // Adresses à ajuster pour le moment
 const QString King::WHITE_KING_IMAGE_URL = "./Images/king_w.png";
@@ -23,6 +24,28 @@ King::King(int yCoord, int xCoord, Color color) : ChessPiece(getImageUrl(color),
         messageLabel->setStyleSheet("color: red; font-weight: bold;");
         messageLabel->setAlignment(Qt::AlignCenter);
         messageLabel->show();
+    }
+    if (color == WHITE)
+    {
+        if (xCoord == 4 && yCoord == 0)
+        {
+            asMooved = false;
+        }
+        else
+        {
+            asMooved = true;
+        }
+    }
+    else
+    {
+        if (xCoord == 4 && yCoord == 7)
+        {
+            asMooved = false;
+        }
+        else
+        {
+            asMooved = true;
+        }
     }
 }
 
@@ -56,8 +79,8 @@ QList<QPointF> King::possibleMoves(QGraphicsPixmapItem* (&board)[8][8], ChessPie
         const int xDirection = direction[0];
         const int yDirection = direction[1];
 
-        const int x = _xCoord +  xDirection;
-        const int y = _yCoord +  yDirection;
+        const int x = _xCoord + xDirection;
+        const int y = _yCoord + yDirection;
 
         // Vérifie si position est valide
         if (x >= 0 && x <= 7 && y >= 0 && y <= 7)
@@ -73,5 +96,53 @@ QList<QPointF> King::possibleMoves(QGraphicsPixmapItem* (&board)[8][8], ChessPie
         }
     }
 
+    // Roque
+    if (!asMooved)
+    {
+        bool canRoqueRight = true;
+        for (int i = 1; i < 3; i++)
+        {
+            if (board[_xCoord + i][_yCoord] != nullptr)
+            {
+                canRoqueRight = false;
+                break;
+            }
+        }
+        Piece::ChessPiece* chessPieceRight;
+        if (board[_xCoord + 3][_yCoord] != nullptr)
+        {
+            chessPieceRight = dynamic_cast<Piece::ChessPiece*>(board[_xCoord + 3][_yCoord]);
+        }
+        if (chessPieceRight->getType() == ROOK && canRoqueRight)
+        {
+            if (!dynamic_cast<Rook*>(chessPieceRight)->asMooved)
+            {
+                moves.append(QPointF(_xCoord + 2, _yCoord));
+            }
+        }
+
+        bool canRoqueLeft = true;
+        for (int i = 1; i < 4; i++)
+        {
+            if (board[_xCoord - i][_yCoord] != nullptr)
+            {
+                canRoqueLeft = false;
+                break;
+            }
+        }
+        Piece::ChessPiece* chessPieceLeft;
+        if (board[_xCoord - 4][_yCoord] != nullptr)
+        {
+            chessPieceLeft = dynamic_cast<Piece::ChessPiece*>(board[_xCoord - 4][_yCoord]);
+        }
+        if (chessPieceLeft->getType() == ROOK && canRoqueLeft)
+        {
+            if (!dynamic_cast<Rook*>(chessPieceLeft)->asMooved)
+            {
+                moves.append(QPointF(_xCoord - 2, _yCoord));
+            }
+        }
+    }
     return moves;
+
 }

@@ -5,7 +5,32 @@
 const QString Rook::WHITE_ROOK_IMAGE_URL = "./Images/rook_w.png";
 const QString Rook::BLACK_ROOK_IMAGE_URL = "./Images/rook_b.png";
 
-Rook::Rook(int yCoord, int xCoord, Color color) : ChessPiece(getImageUrl(color), yCoord, xCoord, color, ROOK), _color(color), _xCoord(xCoord), _yCoord(yCoord) {}
+Rook::Rook(int yCoord, int xCoord, Color color) : ChessPiece(getImageUrl(color), yCoord, xCoord, color, ROOK), _color(color), _xCoord(xCoord), _yCoord(yCoord) 
+{
+    if (color == WHITE)
+    {
+        if ((xCoord == 0 || xCoord == 7) && yCoord == 0)
+        {
+            asMooved = false;
+        }
+        else
+        {
+            asMooved = true;
+        }
+    }
+    else
+    {
+        if ((xCoord == 0 || xCoord == 7) && yCoord == 7)
+        {
+            asMooved = false;
+        }
+        else
+        {
+            asMooved = true;
+        }
+    }
+
+}
 
 QPixmap Rook::getImageUrl(Color color)
 {
